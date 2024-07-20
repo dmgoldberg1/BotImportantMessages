@@ -7,8 +7,8 @@ from aiogram.enums.parse_mode import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 
 import config
-from bot.import_message_sorter.handlers import important_message_sorter_router
-from bot.abbreviation_decipherer.handlers import abbreviation_decipherer_router
+from services.import_message_sorter.handlers import important_message_sorter_router
+from services.abbreviation_decipherer.handlers import abbreviation_decipherer_router
 
 
 async def main():
@@ -19,7 +19,6 @@ async def main():
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(important_message_sorter_router)
     dp.include_router(abbreviation_decipherer_router)
-    dp.message_handlers.once = False
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
 
