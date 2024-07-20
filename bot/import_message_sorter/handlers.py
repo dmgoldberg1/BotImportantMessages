@@ -1,18 +1,18 @@
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
-from filters import ImportanceFilter
+from import_message_sorter.filters import ImportanceFilter
 from bot import config
 
-important_messages_router = Router()
+important_message_sorter_router = Router()
 
 
-@important_messages_router.message(Command("start"))
+@important_message_sorter_router.message(Command("start"))
 async def start_handler(msg: Message):
     await msg.answer("Привет! Я живая!")
 
 
-@important_messages_router.message(ImportanceFilter())
+@important_message_sorter_router.message(ImportanceFilter())
 async def message_handler(msg: Message):
     forwarded_msg = await msg.bot.forward_message(
         chat_id=config.REPORT_CHANNEL_ID,
