@@ -2,7 +2,7 @@ from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from import_message_sorter.filters import ImportanceFilter
-from bot import config
+import config
 
 important_message_sorter_router = Router()
 

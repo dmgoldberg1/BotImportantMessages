@@ -1,6 +1,6 @@
 from aiogram.types import Message
 from aiogram.filters import Filter
-from bot import config
+import config
 
 
 class ImportanceFilter(Filter):
