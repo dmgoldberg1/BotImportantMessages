@@ -11,7 +11,7 @@ abbreviation_decipherer_router = Router()
 
 
 @abbreviation_decipherer_router.message(Command("abbr"))
-@abbreviation_decipherer_router.message(RandomFilter(chance=0.1))
+@abbreviation_decipherer_router.message(RandomFilter(chance=0.04))
 async def message_handler(msg: Message):
     msg_text = msg.text.lower()
     msg_text = re.sub("[^\w]", " ", msg_text).strip()
