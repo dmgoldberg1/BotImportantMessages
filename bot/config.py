@@ -13,3 +13,5 @@ env = dotenv_values(ENV_PATH)
 BOT_TOKEN = env.get("BOT_TOKEN")
 REPORT_CHANNEL_ID = env.get("REPORT_CHANNEL_ID")
 IN_TEXT = env.get("IN_TEXT").split(", ")
+
+DATABASE_PATH = BASE_DIR / "db" / "curse_words.db"

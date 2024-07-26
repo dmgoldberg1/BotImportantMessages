@@ -4,7 +4,7 @@ import re
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
-from abbreviation_decipherer.abbreviation_decipherer import get_deciphers
+from abbreviation_decipherer.abbreviation_decipherer import get_deciphers, n_adjf_of_noun, adjf_noun_of_noun
 from abbreviation_decipherer.filters import RandomFilter
 
 abbreviation_decipherer_router = Router()
@@ -81,3 +81,21 @@ async def abbr_command_handler(msg: Message):
     else:
         text = "Позовите Серёгу, мне плохо от ваших сокращений."
     await msg.reply(text)
+
+
+@abbreviation_decipherer_router.message(Command("blt"))
+async def blt_command_handler(msg: Message):
+    """
+    комагда blt нужна чтобы ругаться матом
+    """
+    msg_text = msg.text.lower()
+    abbr = msg_text.split()[1]
+    if len(abbr) == 3:
+        decipher = adjf_noun_of_noun(abbr)
+    else:
+        decipher = n_adjf_of_noun(abbr)
+    if decipher:
+        text = f'Пиши НЕ <b>"{abbr}"</b>, a <b>"{decipher}"</b>'
+        await msg.reply(text)
+    else:
+        await msg.reply("Я хер знает что тебе надо")

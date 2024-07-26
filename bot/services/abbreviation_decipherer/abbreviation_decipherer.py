@@ -1,10 +1,16 @@
-import random
-
-from bs4 import BeautifulSoup
-import requests
 import re
+import random
+import sqlite3
+import config
+
+import pymorphy2
+import requests
+from bs4 import BeautifulSoup
+from database import database
 
 ABBR_BASE_URL = "https://xn----7sbbfsshef0aedydgg4lyb.xn--p1ai"
+
+morph_analyzer = pymorphy2.MorphAnalyzer()
 
 
 def get_deciphers_from_abbr_page(page):
@@ -57,6 +63,69 @@ def get_deciphers(abbr):
     # return deciphers
 
 
-if __name__ == "__main__":
-    abbr = "лол"
-    print(get_deciphers(abbr))
+def get_random_word_by_ps(ps, start_with=""):
+    cursor = database.get_cursor()
+    if ps == "ADJF":
+        word = cursor.execute(
+            f"""
+            SELECT word FROM curse_words 
+            WHERE (word LIKE '{start_with}%') AND (part_speech IN ('ADJF', 'PRTF'))
+            ORDER BY RANDOM()
+            LIMIT 1
+            """
+        ).fetchone()
+    else:
+        word = cursor.execute(
+            f"""
+            SELECT word FROM curse_words 
+            WHERE (word LIKE '{start_with}%') AND (part_speech='{ps}')
+            ORDER BY RANDOM()
+            LIMIT 1
+            """
+        ).fetchone()
+    cursor.close()
+    if word:
+        return word[0]
+    else:
+        return None
+
+
+def adjf_noun_of_noun(abbr):
+    try:
+        noun1 = morph_analyzer.parse(
+            get_random_word_by_ps("NOUN", start_with=abbr[0]),
+        )[0]
+        adjf1 = morph_analyzer.parse(
+            get_random_word_by_ps("ADJF", start_with=abbr[1]),
+        )[0]
+        noun2 = morph_analyzer.parse(
+            get_random_word_by_ps("NOUN", start_with=abbr[2]),
+        )[0]
+        gender1 = noun1.tag.gender
+        res = "{0} {1} им. {2}".format(
+            adjf1.inflect({"nomn", "sing", gender1}).word,
+            noun1.inflect({"nomn", "sing"}).word,
+            noun2.inflect({"gent"}).word.capitalize(),
+        )
+        return res
+    except AttributeError:
+        return None
+
+
+def n_adjf_of_noun(abbr):
+    try:
+        abbr = abbr.lower()
+        noun1 = morph_analyzer.parse(
+            get_random_word_by_ps("NOUN", start_with=abbr[-1]),
+        )[0]
+        gender1 = noun1.tag.gender
+        words = list()
+        for i in range(len(abbr) - 1):
+            ad = morph_analyzer.parse(
+                get_random_word_by_ps("ADJF", start_with=abbr[i])
+            )[0]
+            words.append(ad.inflect({"nomn", gender1}).word)
+        res = " ".join([w.capitalize() for w in words]) + " " + noun1.word.capitalize()
+        return res
+    except AttributeError:
+        return None
