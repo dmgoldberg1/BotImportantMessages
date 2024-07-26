@@ -4,7 +4,11 @@ import re
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
-from abbreviation_decipherer.abbreviation_decipherer import get_deciphers, n_adjf_of_noun, adjf_noun_of_noun
+from abbreviation_decipherer.abbreviation_decipherer import (
+    get_deciphers,
+    n_adjf_of_noun,
+    adjf_noun_of_noun,
+)
 from abbreviation_decipherer.filters import RandomFilter
 
 abbreviation_decipherer_router = Router()
