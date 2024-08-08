@@ -14,7 +14,7 @@ from abbreviation_decipherer.filters import RandomFilter
 abbreviation_decipherer_router = Router()
 
 
-@abbreviation_decipherer_router.message(RandomFilter(chance=0.04))
+@abbreviation_decipherer_router.message(RandomFilter(chance=0.06))
 async def abbr_message_handler(msg: Message):
     """
     обрабатывает сообщение с некоторой вероятностью сообщения,

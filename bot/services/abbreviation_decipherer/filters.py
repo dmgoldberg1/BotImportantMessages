@@ -22,6 +22,6 @@ class RandomFilter(Filter):
             if random.random() < self.chance:
                 self.msg_counters[chat_id] = 0
                 return True
-            else:
-                self.msg_counters[chat_id] = msg_count
-                return False
+
+        self.msg_counters[chat_id] = msg_count
+        return False
