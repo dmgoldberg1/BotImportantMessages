@@ -9,6 +9,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 import config
 from services.import_message_sorter.handlers import important_message_sorter_router
 from services.abbreviation_decipherer.handlers import abbreviation_decipherer_router
+from services.cat_story.handlers import cat_story
 
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
